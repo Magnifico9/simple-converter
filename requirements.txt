@@ -1,0 +1,9 @@
+Pillow
+pillow-heif
+PyMuPDF
+pdf2docx
+pandas
+openpyxl
+markdown
+py7zr
+winotify
