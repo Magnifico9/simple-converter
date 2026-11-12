@@ -7,6 +7,7 @@ import glob
 import json
 import os
 import shutil
+import sys
 from pathlib import Path
 
 from .util import APPDIR
@@ -29,9 +30,18 @@ def _find(name, extra):
     return shutil.which(name) or _first(extra)
 
 
+def _bundled(name):
+    """FFmpeg shipped next to SimpleConverter.exe by the installer."""
+    if getattr(sys, "frozen", False):
+        p = Path(sys.executable).parent / "ffmpeg" / f"{name}.exe"
+        if p.is_file():
+            return str(p)
+    return None
+
+
 def discover() -> dict:
     found = {
-        "ffmpeg": _find("ffmpeg", [
+        "ffmpeg": _bundled("ffmpeg") or _find("ffmpeg", [
             rf"{LOCAL}\Microsoft\WinGet\Links\ffmpeg.exe",
             rf"{LOCAL}\Microsoft\WinGet\Packages\Gyan.FFmpeg*\*\bin\ffmpeg.exe",
             r"C:\ffmpeg\bin\ffmpeg.exe",

@@ -13,6 +13,16 @@ if sys.stderr is None:
     sys.stderr = open(os.devnull, "w", encoding="utf-8")
 
 try:
+    if len(sys.argv) > 1 and sys.argv[1] in ("--register", "--unregister"):
+        # used by SimpleConverter-Setup.exe (bundled app), runs elevated
+        from simple_converter import registry
+        from simple_converter.util import log
+        if sys.argv[1] == "--register":
+            exe = sys.executable
+            registry.register(f'"{exe}"', f'"{exe}",0', machine=True, log=log)
+        else:
+            registry.unregister(log=log)
+        sys.exit(0)
     from simple_converter.app import main
     sys.exit(main(sys.argv[1:]))
 except SystemExit:

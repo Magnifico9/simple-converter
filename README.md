@@ -30,7 +30,18 @@ a PDF offers Word, text, images, merge and compress; an MP4 offers other video f
 | **Ebooks** (epub, mobi, azw3, fb2) | EPUB, PDF, MOBI, AZW3, DOCX, TXT | |
 | **Archives** (zip, 7z, tar, tgz, rar) | ZIP, 7Z, TAR.GZ | |
 
-## Requirements
+## Install (easy way)
+
+1. Download **`SimpleConverter-Setup-x.y.z.exe`** from the [latest release](https://github.com/Magnifico9/simple-converter/releases/latest).
+2. Run it. Windows SmartScreen may say "Windows protected your PC" because the installer isn't code-signed: click **More info → Run anyway**.
+3. Optionally tick **Install LibreOffice** (Word/Excel/PowerPoint) and **Install Calibre** (ebooks).
+4. Right-click any file → **Convert to ▸**
+
+No Python needed: the installer bundles everything, including FFmpeg. Uninstall from **Settings → Apps**.
+
+## Install from source (alternative)
+
+### Requirements
 
 - Windows 10 or 11
 - [Python 3.10+](https://www.python.org/downloads/)
@@ -50,7 +61,7 @@ winget install calibre.calibre
 
 Menu items whose engine isn't installed are hidden automatically.
 
-## Install
+### Steps
 
 1. Download or clone this repository to a folder you'll keep (for example `C:\Tools\simple-converter`).
 2. Double-click **`install.bat`** and click **Yes** on the admin prompt.
@@ -60,9 +71,19 @@ Run `install.bat` again after installing LibreOffice or Calibre, or after moving
 
 On Windows 11's compact menu, **Convert to** is under **Show more options**. With the classic menu it shows directly.
 
-## Uninstall
+### Uninstall
 
 Double-click **`uninstall.bat`**, then delete the folder.
+
+## Building the installer
+
+Requires [Inno Setup 6](https://jrsoftware.org/isinfo.php) (`winget install JRSoftware.InnoSetup`). Then run:
+
+```bash
+powershell -ExecutionPolicy Bypass -File installer\build.ps1
+```
+
+The script bundles the app with PyInstaller, downloads the FFmpeg essentials build, and writes `installer\Output\SimpleConverter-Setup-<version>.exe`. The version number is set in `installer\setup.iss`.
 
 ## Notes
 
@@ -85,3 +106,5 @@ When several files are selected, Explorer starts one process per file; they meet
 ## License
 
 [MIT](LICENSE) © Haitham Joban
+
+The installer bundles [FFmpeg](https://ffmpeg.org/) (essentials build from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/)), which is licensed under the GPL v3. Its license is installed as `ffmpeg\LICENSE.txt`, and its source code is available from the FFmpeg project.
